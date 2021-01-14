@@ -3,7 +3,7 @@ require 'pry'
 class CashRegister
     attr_reader :total
 
-    def initialize(init_discount = 0.0)
+    def initialize(init_discount = nil)
         @total = 0
         @discount = init_discount
         @items = []
@@ -23,7 +23,7 @@ class CashRegister
     end
 
     def apply_discount
-        if @discount != 0
+        if @discount != nil
             @total -= @total * (@discount / 100.0)
             return "After the discount, the total comes to $#{total.floor}."
         else
