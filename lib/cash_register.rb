@@ -12,7 +12,6 @@ class CashRegister
     
     def total=(total)
         @total = total
-        p "Total: #{@total}"
     end
     
     def discount
