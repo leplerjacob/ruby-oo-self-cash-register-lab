@@ -1,9 +1,6 @@
 require 'pry'
 
 class CashRegister
-
-    # Test
-
     attr_reader :total
 
     def initialize(init_discount = 0.0)
@@ -19,15 +16,10 @@ class CashRegister
     def discount
         @discount
     end
-    
+
     def add_item(title, price, quantity = 1)
-        @prev_trans = {:title => title, :price => price, :quantity => quantity}
-        curr_trans = []
-        for i in 0...quantity
-            @total += price
-            curr_trans << title
-        end
-        @items.push(curr_trans)
+        @items << {:title => title, :price => price, :quantity => quantity}
+        @total += (price * quantity)
     end
 
     def apply_discount
@@ -40,11 +32,14 @@ class CashRegister
     end
 
     def items
-        @items.flatten
+        @items = @items.map{|trans|
+            ((trans[:title] + " ") * trans[:quantity]).split(" ")
+        }.flatten
     end
 
     def void_last_transaction
-        @total -= (@prev_trans[:price] * @prev_trans[:quantity])
+        last_item = @items[@items.length - 1]
+        @total -= (last_item[:price] * last_item[:quantity])
         @items.pop
     end
 end
