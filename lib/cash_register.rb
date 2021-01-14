@@ -2,6 +2,8 @@ require 'pry'
 
 class CashRegister
 
+    # Test
+
     attr_reader :total
 
     def initialize(init_discount = 0.0)
