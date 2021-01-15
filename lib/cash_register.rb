@@ -1,45 +1,45 @@
-require 'pry'
-
 class CashRegister
-    attr_reader :total
 
-    def initialize(init_discount = nil)
+    attr_accessor :total
+    
+    def initialize(employee_discount = 0)
         @total = 0
-        @discount = init_discount
-        @items = []
+        @employee_discount = employee_discount
+        @all_items = []
     end
-    
-    def total=(total)
-        @total = total
-    end
-    
+
     def discount
-        @discount
+        @employee_discount
     end
 
     def add_item(title, price, quantity = 1)
-        @items << {:title => title, :price => price, :quantity => quantity}
         @total += (price * quantity)
+        @all_items << {:title => title, :price => price, :quantity => quantity}
+        # count = 0
+            # while count < quantity
+            #     @all_items << title
+            #         count += 1
+            # end
     end
-
+    
     def apply_discount
-        if @discount != nil
-            @total -= @total * (@discount / 100.0)
-            return "After the discount, the total comes to $#{total.floor}."
+        @total = @total - (@total * (@employee_discount / 100.0))
+        if @employee_discount != 0
+            "After the discount, the total comes to $#{@total.floor}."
         else
-            return "There is no discount to apply."
+            "There is no discount to apply."
         end
+        # binding.pry
     end
 
     def items
-        @items = @items.map{|trans|
-            ((trans[:title] + " ") * trans[:quantity]).split(" ")
-        }.flatten
+    @all_items = @all_items.map do |items|
+            ((items[:title] + " ") * items[:quantity]).split()
+    end.flatten
     end
 
     def void_last_transaction
-        last_item = @items[@items.length - 1]
-        @total -= (last_item[:price] * last_item[:quantity])
-        @items.pop
+        voided_item = @all_items.pop
+        @total -= (voided_item[:price] * voided_item[:quantity])
     end
 end
